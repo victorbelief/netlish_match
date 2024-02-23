@@ -1,0 +1,73 @@
+** Generated for: hspiceD
+** Generated on: Jan  9 05:50:39 2024
+** Design library name: ZYX_try
+** Design cell name: 5_T_OTA_tb
+** Design view name: schematic
+.GLOBAL vss! iss!
+
+
+.TEMP 25.0
+.OPTION
++    ARTIST=2
++    INGOLD=2
++    PARHIER=LOCAL
++    PSF=2
++    HIER_DELIM=0
+
+
+.LIB "D:/paperwork/smic18/models/hspice/ms018_enhanced_v1p11.lib" TT
+.LIB "D:/paperwork/smic18/models/hspice/ms018_enhanced_v1p11.lib" BJT_TT
+.LIB "D:/paperwork/smic18/models/hspice/ms018_enhanced_v1p11.lib" DIO_TT
+.LIB "D:/paperwork/smic18/models/hspice/ms018_enhanced_v1p11.lib" RES_TT
+.LIB "D:/paperwork/smic18/models/hspice/ms018_enhanced_v1p11.lib" MIM_TT
+.LIB "D:/paperwork/smic18/models/hspice/ms018_enhanced_v1p11.lib" VAR_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" RES_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" MIM_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" VAR_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" IND_RF_PSUB_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" IND_RF_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" 3TDIFF_PSUB_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" 3TDIFF_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" 2TDIFF_PSUB_TT
+.LIB "D:/paperwork/smic18/models/hspice/mse018_v1p11_rf.lib" 2TDIFF_TT
+
+
+
+** Library name: ZYX_try
+** Cell name: 5_T_OTA
+** View name: schematic
+.subckt ZYX_try_5_T_OTA_schematic gnd iss vn vout vp vss
+mpm1 vss net2 vout vss p18 m=1 w=160e-6 l=1e-6 nf=8 ad=43.2e-12 as=51.6e-12 pd=164.32e-6 ps=205.16e-6 nrd=1.6875e-3 nrs=1.6875e-3 sa=480e-9 sb=480e-9 sd=540e-9 sca=0 scb=0 scc=0
+mpm0 net2 net2 vss vss p18 m=1 w=160e-6 l=1e-6 nf=8 ad=43.2e-12 as=51.6e-12 pd=164.32e-6 ps=205.16e-6 nrd=1.6875e-3 nrs=1.6875e-3 sa=480e-9 sb=480e-9 sd=540e-9 sca=0 scb=0 scc=0
+mnm7 iss iss gnd gnd n18 m=1 w=80e-6 l=1e-6 nf=4 ad=21.6e-12 as=30e-12 pd=82.16e-6 ps=123e-6 nrd=3.375e-3 nrs=3.375e-3 sa=480e-9 sb=480e-9 sd=540e-9 sca=0 scb=0 scc=0
+mnm2 net1 iss gnd gnd n18 m=1 w=80e-6 l=1e-6 nf=4 ad=21.6e-12 as=30e-12 pd=82.16e-6 ps=123e-6 nrd=3.375e-3 nrs=3.375e-3 sa=480e-9 sb=480e-9 sd=540e-9 sca=0 scb=0 scc=0
+mnm1 net1 vn vout gnd n18 m=1 w=80e-6 l=1e-6 nf=1 ad=38.4e-12 as=38.4e-12 pd=160.96e-6 ps=160.96e-6 nrd=3.375e-3 nrs=3.375e-3 sa=480e-9 sb=480e-9 sd=0 sca=0 scb=0 scc=0
+mnm0 net2 vp net1 gnd n18 m=1 w=80e-6 l=1e-6 nf=1 ad=38.4e-12 as=38.4e-12 pd=160.96e-6 ps=160.96e-6 nrd=3.375e-3 nrs=3.375e-3 sa=480e-9 sb=480e-9 sd=0 sca=0 scb=0 scc=0
+.ends ZYX_try_5_T_OTA_schematic
+** End of subcircuit definition.
+
+** Library name: ZYX_try
+** Cell name: 5_T_OTA_tb
+** View name: schematic
+xi3 0 iss! net2 net3 net1 vss! ZYX_try_5_T_OTA_schematic
+v8 vss! 0 DC=1.65 AC 0
+v1 net1 0 DC=1.65 AC 0
+v0 net2 net1 DC=0 AC 1 180
+c0 net3 0 5e-12
+i4 vss! iss! DC=1e-3
+
+
+.control
+op
+AC DEC 10 0.01 100000K
+settype decibel out
+plot vdb(net3) xlimit 1 100000k ylabel 'small signal gain'
+settype phase out
+plot cph(net3) xlimit 1 100000k ylabel 'phase (in rad)'
+let outd = 180/PI*cph(net3)
+settype phase outd
+plot outd xlimit 1 100000k ylabel 'phase'
+.endc
+
+.END
